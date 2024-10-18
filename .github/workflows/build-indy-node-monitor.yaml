@@ -46,7 +46,7 @@ jobs:
         run: echo "USERNAME=$(echo ${{ github.repository_owner }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
 
       - name: Build the Docker image
-        run: cd fetch-validator-status && docker build -t ghcr.io/${{ env.USERNAME }}/${{ github.event.repository.name }}/indy-node-monitor:${{ inputs.ref || env.LATEST_TAG  }} .
+        run: docker build -t ghcr.io/${{ env.USERNAME }}/${{ github.event.repository.name }}/indy-node-monitor:${{ inputs.ref || env.LATEST_TAG  }} ./fetch-validator-status/
 
       - name: Push the Docker image
         run: docker push ghcr.io/${{ env.USERNAME }}/${{ github.event.repository.name }}/indy-node-monitor:${{ inputs.ref || env.LATEST_TAG }}
