@@ -18,10 +18,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout repository main
+        uses: actions/checkout@v4
+
+      - name: Extract latest version from Git tag
+        run: |
+          LATEST_TAG=$(git describe --tags `git rev-list --tags --max-count=1`)
+          echo "LATEST_TAG=$LATEST_TAG" >> $GITHUB_ENV
+
       - name: Checkout repository specific tag
         uses: actions/checkout@v4
         with:
-          ref: v${{ inputs.ref }}
+          ref: v${{ inputs.ref || env.LATEST_TAG }}
 
       - name: Extract latest version from Git tag
         run: |
