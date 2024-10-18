@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
     inputs:
        ref:
-        default: 2.4.3
+        default: 2.4.5
         required: false
         type: string
 
@@ -27,10 +27,14 @@ jobs:
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
       - name: Extract version from Git tag
-        run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+        run: |
+          echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+          echo "VERSION=${GITHUB_REF#refs/tags/}"
+          echo "$PWD"
+          ls 
 
       - name: Build the Docker image
-        run: cd fetch-validator-status && docker build -t ghcr.io/${{ github.actor }}/${{ github.event.repository.name }}/indy-node-monitor:${{ inputs.tag }} .
+        run: cd fetch-validator-status && docker build -t ghcr.io/${{ github.actor }}/${{ github.event.repository.name }}/indy-node-monitor:${{ inputs.ref }} .
 
       - name: Push the Docker image
-        run: docker push ghcr.io/${{ github.actor }}/${{ github.event.repository.name }}/indy-node-monitor:${{ inputs.tag }}
+        run: docker push ghcr.io/${{ github.actor }}/${{ github.event.repository.name }}/indy-node-monitor:${{ inputs.ref }}
