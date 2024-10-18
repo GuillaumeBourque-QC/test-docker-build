@@ -9,7 +9,7 @@ on:
   
   workflow_dispatch:
     inputs:
-       ref:
+      ref:
         required: false
         type: string
 
