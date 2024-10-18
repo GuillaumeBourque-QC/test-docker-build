@@ -23,7 +23,7 @@ jobs:
         with:
           ref: v${{ inputs.ref }}
 
-     - name: Extract latest version from Git tag
+      - name: Extract latest version from Git tag
         run: |
           LATEST_TAG=$(git describe --tags `git rev-list --tags --max-count=1`)
           echo "LATEST_TAG=$LATEST_TAG" >> $GITHUB_ENV
