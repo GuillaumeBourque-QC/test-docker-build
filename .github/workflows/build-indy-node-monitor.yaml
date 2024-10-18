@@ -18,18 +18,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository main
+      - name: Checkout repository specific tag
         uses: actions/checkout@v4
+        with:
+          ref: v${{ inputs.ref }}
 
      - name: Extract latest version from Git tag
         run: |
           LATEST_TAG=$(git describe --tags `git rev-list --tags --max-count=1`)
           echo "LATEST_TAG=$LATEST_TAG" >> $GITHUB_ENV
-
-      - name: Checkout repository specific tag
-        uses: actions/checkout@v4
-        with:
-          ref: v${{ inputs.ref || env.LATEST_TAG }}
 
       - name: Log in to the GitHub Container Registry
         uses: docker/login-action@v3
@@ -42,7 +39,7 @@ jobs:
         run: echo "USERNAME=$(echo ${{ github.repository_owner }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
 
       - name: Build the Docker image
-        run: cd fetch-validator-status && docker build -t ghcr.io/${{ env.USERNAME }}/${{ github.event.repository.name }}/indy-node-monitor:${{ inputs.ref || env.LATEST_TAG }} .
+        run: cd fetch-validator-status && docker build -t ghcr.io/${{ env.USERNAME }}/${{ github.event.repository.name }}/indy-node-monitor:${{ inputs.ref }} .
 
       - name: Push the Docker image
-        run: docker push ghcr.io/${{ env.USERNAME }}/${{ github.event.repository.name }}/indy-node-monitor:${{ inputs.ref || env.LATEST_TAG }}
+        run: docker push ghcr.io/${{ env.USERNAME }}/${{ github.event.repository.name }}/indy-node-monitor:${{ inputs.ref }}
