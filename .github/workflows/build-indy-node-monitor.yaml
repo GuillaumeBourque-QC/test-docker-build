@@ -23,7 +23,7 @@ jobs:
         run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
 
       - name: Build the Docker image
-        run: docker build -t ghcr.io/${{ github.actor }}/${{ github.event.repository.name }}/indy-node-monitor:${{ env.VERSION }} .
+        run: cd fetch-validator-status && docker build -t ghcr.io/${{ github.actor }}/${{ github.event.repository.name }}/indy-node-monitor:${{ env.VERSION }} .
 
       - name: Push the Docker image
         run: docker push ghcr.io/${{ github.actor }}/${{ github.event.repository.name }}/indy-node-monitor:${{ env.VERSION }}
