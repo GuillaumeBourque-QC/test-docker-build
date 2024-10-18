@@ -12,7 +12,7 @@ on:
       ref:
         required: false
         type: string
-        description: 'Dont forget to include the v like this v2.4.6'
+        description: "This is the tag version, don't include the v like this 2.4.6, if you dont provide a version we will get the latest tag"
 
 jobs:
   build:
@@ -24,16 +24,16 @@ jobs:
         with:
           fetch-depth: 0 # Required due to the way Git works, without it this action won't be able to find any or the correct tags
 
-      - name: Extract latest version from Git tag
+      - name: Extract latest version from Git tag, excludind the v.
         run: |
-          LATEST_TAG=$(git describe --tags `git rev-list --tags --max-count=1`)
+          LATEST_TAG=$(git describe --tags `git rev-list --tags --max-count=1` | cut -c2-)
           echo "LATEST_TAG=$LATEST_TAG" >> $GITHUB_ENV
           echo "LATEST_TAG=$LATEST_TAG"
 
       - name: Checkout repository specific tag
         uses: actions/checkout@v4
         with:
-          ref: ${{ inputs.ref || env.LATEST_TAG }}
+          ref: v${{ inputs.ref || env.LATEST_TAG }}
 
       - name: Extract latest version from Git tag
         run: |
