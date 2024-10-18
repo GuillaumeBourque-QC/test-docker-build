@@ -34,7 +34,7 @@ jobs:
           ls 
 
       - name: Build the Docker image
-        run: cd fetch-validator-status && docker build -t ghcr.io/${{ github.actor }}/${{ github.event.repository.name }}/indy-node-monitor:${{ inputs.ref }} .
+        run: cd fetch-validator-status && docker build -t ghcr.io/${{  toLower(github.actor) }}/${{ github.event.repository.name }}/indy-node-monitor:${{ inputs.ref }} .
 
       - name: Push the Docker image
-        run: docker push ghcr.io/${{ github.actor }}/${{ github.event.repository.name }}/indy-node-monitor:${{ inputs.ref }}
+        run: docker push ghcr.io/${{ toLower(github.actor) }}/${{ github.event.repository.name }}/indy-node-monitor:${{ inputs.ref }}
