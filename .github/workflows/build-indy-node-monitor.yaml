@@ -7,6 +7,11 @@ on:
     paths:
       - 'fetch-validator-status/**'  # Build only if their are changes in thos directory
   workflow_dispatch:
+    inputs:
+       ref:
+        default: 2.4.3
+        required: false
+        type: string
 
 jobs:
   build:
