@@ -5,12 +5,12 @@ on:
     branches:
       - main
     paths:
-      - 'fetch-validator-status/**'  # Build only if their are changes in thos directory
+      - 'fetch-validator-status/**'  # Build only if their are changes in this directory
+  
   workflow_dispatch:
     inputs:
        ref:
         required: false
-        default: 2.4.6
         type: string
 
 jobs:
@@ -41,7 +41,7 @@ jobs:
         run: echo "USERNAME=$(echo ${{ github.actor }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
 
       - name: Build the Docker image
-        run: cd fetch-validator-status && docker build -t ghcr.io/${{ env.USERNAME }}/${{ github.event.repository.name }}/indy-node-monitor:${{ inputs.ref }} .
+        run: cd fetch-validator-status && docker build -t ghcr.io/${{ env.USERNAME }}/${{ github.event.repository.name }}/indy-node-monitor:${{ inputs.ref || env.LATEST_TAG }} .
 
       - name: Push the Docker image
-        run: docker push ghcr.io/${{ env.USERNAME }}/${{ github.event.repository.name }}/indy-node-monitor:${{ inputs.ref }}
+        run: docker push ghcr.io/${{ env.USERNAME }}/${{ github.event.repository.name }}/indy-node-monitor:${{ inputs.ref || env.LATEST_TAG }}
