@@ -12,6 +12,7 @@ on:
       ref:
         required: false
         type: string
+        description: 'Dont forget to include the v like this v2.4.6'
 
 jobs:
   build:
@@ -27,11 +28,12 @@ jobs:
         run: |
           LATEST_TAG=$(git describe --tags `git rev-list --tags --max-count=1`)
           echo "LATEST_TAG=$LATEST_TAG" >> $GITHUB_ENV
+          echo "LATEST_TAG=$LATEST_TAG"
 
       - name: Checkout repository specific tag
         uses: actions/checkout@v4
         with:
-          ref: v${{ inputs.ref || env.LATEST_TAG }}
+          ref: ${{ inputs.ref || env.LATEST_TAG }}
 
       - name: Extract latest version from Git tag
         run: |
